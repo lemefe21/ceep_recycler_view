@@ -20,7 +20,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        //cria as ViewHolder suficientes (containers)
+        //cria as ViewHolder suficientes para que o Adapter seja capaz de reutilizá-las conforme a ação de scroll é realizada.
 
         return null;
     }
@@ -34,6 +34,8 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
         //internamente o RecyclerView ao acabar as ViewHolder criados pelo onCreateViewHolder durante o scroll
         //ele pega a primeira ou última view que não está mais visivel e faz um processo de reciclagem sendo retirada da memória para
         //realizar novamente o bind com novas informações do próximo item que irá aparecer
+
+        //o parâmetro de posição possibilita a reutilização das views de acordo com o objeto que precisa ser apresentado conforme o movimento de scroll
 
     }
 
