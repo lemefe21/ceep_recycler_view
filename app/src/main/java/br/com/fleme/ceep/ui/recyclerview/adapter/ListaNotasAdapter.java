@@ -3,6 +3,7 @@ package br.com.fleme.ceep.ui.recyclerview.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
 
     private List<Nota> notas;
     private Context context;
+    public static final String RECYCLER_VIEW_ADAPTER = "RecyclerView Adapter";
+    private static int quantidadeViewCriada = 0;
+    private static int quantidadeBindView = 0;
 
     public ListaNotasAdapter(Context context, List<Nota>notas) {
         this.context = context;
@@ -26,6 +30,9 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        quantidadeViewCriada++;
+        Log.i(RECYCLER_VIEW_ADAPTER, "ViewHolder Criada: " + quantidadeViewCriada);
 
         //cria as ViewHolder suficientes para que o Adapter seja capaz de reutilizá-las conforme a ação de scroll é realizada.
 
@@ -52,7 +59,10 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
         TextView descricao = viewHolder.itemView.findViewById(R.id.item_nota_descricao);
         descricao.setText(nota.getDescricao());
 
-        //cópia de linha - Ctrl + D
+        //cópia de linha - Ctrl +
+
+        quantidadeBindView++;
+        Log.i(RECYCLER_VIEW_ADAPTER, "Bind ViewHolder: Posição " + position + " - Quantidade " + quantidadeBindView);
 
 
     }
