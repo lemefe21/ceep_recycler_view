@@ -14,7 +14,7 @@ import java.util.List;
 import br.com.fleme.ceep.R;
 import br.com.fleme.ceep.model.Nota;
 
-public class ListaNotasAdapter extends RecyclerView.Adapter {
+public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.NotaViewHolder> {
 
     private List<Nota> notas;
     private Context context;
@@ -29,7 +29,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListaNotasAdapter.NotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         quantidadeViewCriada++;
         Log.i(RECYCLER_VIEW_ADAPTER, "ViewHolder Criada: " + quantidadeViewCriada);
@@ -42,7 +42,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull ListaNotasAdapter.NotaViewHolder notaViewHolder, int position) {
 
         //pega as ViewHolder criadas e faz o processo de bind das informações
         //chamado no momento do scroll da tela para realizar o bind dos demais ViewHolder que serão mostrados
@@ -53,17 +53,28 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
 
         //o parâmetro de posição possibilita a reutilização das views de acordo com o objeto que precisa ser apresentado conforme o movimento de scroll
 
+        //evitar processos que não precisem ser executados mais de uma vez dentro do onBindViewHolder !!!
+        //nesse caso delegamos essa parte para o NotaViewHolder (buscar as views agora fica dentro do seu construtor)
+
+        //resumindo...
+        //onBindViewHolder fica responsável em apenas pegar o objeto a partir da posição e enviar para o ViewHolder se responsabilizar
+        //em computar as informações na view.
+
         Nota nota = notas.get(position);
-        TextView titulo = viewHolder.itemView.findViewById(R.id.item_nota_titulo);
-        titulo.setText(nota.getTitulo());
-        TextView descricao = viewHolder.itemView.findViewById(R.id.item_nota_descricao);
-        descricao.setText(nota.getDescricao());
+        //TextView titulo = viewHolder.itemView.findViewById(R.id.item_nota_titulo);
+        //TextView descricao = viewHolder.itemView.findViewById(R.id.item_nota_descricao);
+
+        //podemos evitar o cast usando um Adapter do RecylcerView que recebe um generics para utilziarmos o nosso view holder
+        //NotaViewHolder notaViewHolder = (NotaViewHolder) viewHolder;
+
+        //titulo.setText(nota.getTitulo());
+        ///descricao.setText(nota.getDescricao());
+        notaViewHolder.vincula(nota);
 
         //cópia de linha - Ctrl +
 
         quantidadeBindView++;
         Log.i(RECYCLER_VIEW_ADAPTER, "Bind ViewHolder: Posição " + position + " - Quantidade " + quantidadeBindView);
-
 
     }
 
@@ -74,8 +85,22 @@ public class ListaNotasAdapter extends RecyclerView.Adapter {
 
     class NotaViewHolder extends RecyclerView.ViewHolder {
 
+        //a busca das views não precisa ser feita todas as vezes igual no onBindViewHolder anteriormente
+        //e a responsabilidade de setar as informações na view tb passar para o nosso ViewHolder
+        private final TextView titulo;
+        private final TextView descricao;
+
         public NotaViewHolder(View itemView) {
             super(itemView);
+
+            titulo = itemView.findViewById(R.id.item_nota_titulo);
+            descricao = itemView.findViewById(R.id.item_nota_descricao);
+
+        }
+
+        public void vincula(Nota nota) {
+            titulo.setText(nota.getTitulo());
+            descricao.setText(nota.getDescricao());
         }
 
     }
