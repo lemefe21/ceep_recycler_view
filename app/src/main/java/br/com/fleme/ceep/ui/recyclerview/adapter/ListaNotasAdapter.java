@@ -16,8 +16,8 @@ import br.com.fleme.ceep.model.Nota;
 
 public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.NotaViewHolder> {
 
-    private List<Nota> notas;
-    private Context context;
+    private final List<Nota> notas;
+    private final Context context;
     public static final String RECYCLER_VIEW_ADAPTER = "RecyclerView Adapter";
     private static int quantidadeViewCriada = 0;
     private static int quantidadeBindView = 0;
@@ -36,9 +36,13 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
 
         //cria as ViewHolder suficientes para que o Adapter seja capaz de reutilizá-las conforme a ação de scroll é realizada.
 
-        View viewCriada = LayoutInflater.from(context).inflate(R.layout.item_nota, parent, false);
+        View viewCriada = criaView(parent);
 
         return new NotaViewHolder(viewCriada);
+    }
+
+    private View criaView(@NonNull ViewGroup parent) {
+        return LayoutInflater.from(context).inflate(R.layout.item_nota, parent, false);
     }
 
     @Override
@@ -99,6 +103,10 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         }
 
         public void vincula(Nota nota) {
+            preencheCampos(nota);
+        }
+
+        private void preencheCampos(Nota nota) {
             titulo.setText(nota.getTitulo());
             descricao.setText(nota.getDescricao());
         }

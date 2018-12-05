@@ -21,25 +21,42 @@ public class ListaNotasActivity extends AppCompatActivity {
 
         //+ dependências - Ctrl + Shift + Alt + S (Project Structure)
         //find file - Ctrl + Shift + N
-
         //clean imports - Ctrl + Alt + O
 
-        RecyclerView listaDeNotas = findViewById(R.id.lista_notas_recycler_view);
+        List<Nota> todasNotas = notasDeExemplo();
 
+        configuraRecyclerView(todasNotas);
+
+    }
+
+    private List<Nota> notasDeExemplo() {
         NotaDAO dao = new NotaDAO();
         for(int i = 1; i <= 10000; i++) {
             dao.insere(new Nota("Título " + i, "Descrição " + i));
         }
 
-        List<Nota> todasNotas = dao.todos();
+        return dao.todos();
+    }
 
-        //adapter do list view
-        //listaDeNotas.setAdapter(new ListaNotasAdapter(this, todasNotas));
+    private void configuraRecyclerView(List<Nota> todasNotas) {
+
+        RecyclerView listaDeNotas = findViewById(R.id.lista_notas_recycler_view);
 
         //adapter do recycler view
-        listaDeNotas.setAdapter(new ListaNotasAdapter(this, todasNotas));
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        listaDeNotas.setLayoutManager(layoutManager);
+        configuraAdapter(todasNotas, listaDeNotas);
 
+        //setamos o layout manager direto no xml
+        //app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        //configuraLayoutManager(listaDeNotas);
     }
+
+    //private void configuraLayoutManager(RecyclerView listaDeNotas) {
+    //    LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+    //    listaDeNotas.setLayoutManager(layoutManager);
+    //}
+
+    private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaDeNotas) {
+        listaDeNotas.setAdapter(new ListaNotasAdapter(this, todasNotas));
+    }
+
 }
