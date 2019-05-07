@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="br.com.fleme.ceep.ui.activity.ListaNotasActivity">
 
+    <!-- se usarmos GridView dentro do Recyler, podemos setar as colunas com app:spanCount="2" por exemplo -->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lista_notas_recycler_view"
         android:layout_width="0dp"
